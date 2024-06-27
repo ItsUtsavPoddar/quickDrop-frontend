@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 const Header = () => {
   return (
     <>
-      <div className="font-cust  text-white fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-[#0a0a0a] bg-opacity-95 text-lg">
+      <div className="font-cust  text-white  top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-[#0a0a0a] bg-opacity-95 text-lg">
         <div className="text-xl  font-light">
           <Sheet>
             <SheetTrigger asChild>
