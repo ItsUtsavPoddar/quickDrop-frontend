@@ -14,6 +14,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [guestId, setGuestId] = useState("lol");
+
   async function login(e) {
     e.preventDefault();
     // Handle form for login to .env api using axios
@@ -30,7 +31,7 @@ export default function Auth() {
       if (response.data.token) {
         console.log("Token is received from the backend"); // Token is received from the backend
         localStorage.setItem("token", response.data.token);
-        //router.push("/"); // Redirect to dashboard or any other page
+        router.push("/"); // Redirect to dashboard
       }
     } catch (error) {
       throw error;
@@ -52,7 +53,6 @@ export default function Auth() {
       if (response.status === 200) {
         console.log(e);
         login(e);
-        //router.push("/"); // Redirect to dashboard or any other page
       }
       if (response.status === 400) {
         console.log("User already exists");
@@ -69,11 +69,11 @@ export default function Auth() {
         { guestName: guestId }
       );
 
-      console.log("data is received from the backend"); // Token is received from the backend
+      console.log("data is received from the backend");
       console.log(response.data);
       if (response.data.guestId) {
         localStorage.setItem("guestId", response.data.guestId);
-        //router.push("/"); // Redirect to dashboard or any other page
+        router.push("/"); // Redirect to dashboard
       }
     } catch (error) {
       throw error;

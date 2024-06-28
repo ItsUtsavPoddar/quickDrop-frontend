@@ -4,7 +4,7 @@ import Chat from "@/components/Chat";
 import Rooms from "@/components/Rooms";
 export default function Home() {
   return (
-    <main className="">
+    <main className="text-white">
       {/* <h1 className="font-custMontFont bg-slate-950 text-white ">ChatN'Gone</h1> */}
       {/* <Auth /> */}
       <Chat />

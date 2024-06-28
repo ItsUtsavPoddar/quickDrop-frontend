@@ -4,7 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export default function Rooms() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,10 +33,11 @@ export default function Rooms() {
       room.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
+
   return (
     <div className="bg-muted border-r p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-medium">Rooms</h2>
+        <h2 className="text-lg font-medium">Your Rooms</h2>
         <div className="flex items-center gap-2">
           <Input
             type="text"

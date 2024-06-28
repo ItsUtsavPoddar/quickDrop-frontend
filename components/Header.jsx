@@ -2,7 +2,14 @@ import { SheetTrigger, SheetContent, Sheet } from "./ui/sheet";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
+
 const Header = () => {
+  const router = useRouter();
+  function logout() {
+    localStorage.removeItem("token");
+    router.push("/auth");
+  }
   return (
     <>
       <div className="font-cust  text-white  top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-[#0a0a0a] bg-opacity-95 text-lg">
@@ -11,7 +18,7 @@ const Header = () => {
             <SheetTrigger asChild>
               <Button className=" bg-[#000000] text-white" variant="">
                 <MenuIcon className="h-8 w-8" />
-                <span className="pl-2 text-md">Your Rooms</span>
+                <span className="pl-2 text-xl">Rooms</span>
               </Button>
             </SheetTrigger>
             <SheetContent
@@ -65,14 +72,10 @@ const Header = () => {
           </Sheet>
         </div>
 
-        <nav className=" hidden gap-4 justify-center lg:flex ">
-          <Link
-            className="hover:underline cursor-pointer"
-            target="blank"
-            href="/guest"
-          >
-            Guest
-          </Link>
+        <nav className="  gap-4 justify-center lg:flex">
+          <Button className="hover:cursor-pointer" onClick={logout}>
+            LogOut
+          </Button>
         </nav>
       </div>
     </>

@@ -6,8 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-
+import MessageReceived from "./MessageReceived";
+import MessageSent from "./MessageSent";
+import { useEffect, useRef } from "react";
+import axios from "axios";
 export default function Chat() {
+  const messagesEndRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const filteredRooms = useMemo(() => {
@@ -34,6 +47,53 @@ export default function Chat() {
       room.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
+
+  async function sendMessage(e) {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/`,
+        {
+          content: "testefe",
+          roomId: "gktFE6",
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Message Sent");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  async function getMessages(e) {
+    e.preventDefault();
+
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/Prv5qB`,
+
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Messages Received");
+        setMessages(response.data);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return (
     <>
       <div className="flex bg-black flex-col h-dvh w-full">
@@ -85,46 +145,25 @@ export default function Chat() {
         <div className="flex-1 p-3">
           <Header />
           <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border">
-            <div className="flex-1 overflow-y-auto p-2">
-              <div className="grid gap-4">
-                <div className="flex items-start gap-4">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">John Doe</p>
-                      <p className="text-xs text-muted-foreground">2:39 PM</p>
-                    </div>
-                    <p>{"Hey everyone, how's it going?"}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 justify-end">
-                  <div className="grid gap-1">
-                    <div className="flex items-center gap-2 justify-end">
-                      <p className="text-xs text-muted-foreground">2:40 PM</p>
-                      <p className="font-medium">Jane Smith</p>
-                    </div>
-                    <div className="bg-primary text-primary-foreground rounded-md px-4 py-2">
-                      <p>Great, thanks for asking!</p>
-                    </div>
-                  </div>
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JS</AvatarFallback>
-                  </Avatar>
-                </div>
+            <div className="flex-1 overflow-y-auto p-2 ">
+              <div className="grid gap-4 flex-col" ref={messagesEndRef}>
+                {messages.map((msg) =>
+                  msg.username === "utsav" ? (
+                    <MessageSent key={msg.id} data={msg} />
+                  ) : (
+                    <MessageReceived key={msg.id} data={msg} />
+                  )
+                )}
               </div>
             </div>
-            <div className="border-t p-4">
+            <div className="border-t p-4 ">
               <form className="flex items-center gap-2">
                 <Input
                   id="message"
                   placeholder="Type your message..."
                   className="flex-1"
                 />
-                <Button type="submit">
+                <Button type="submit" onClick={getMessages}>
                   <SendIcon className="h-5 w-5" />
                   <span className="sr-only">Send message</span>
                 </Button>
