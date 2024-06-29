@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-const AddRoom = () => {
+const AddRoom = ({ callGetRoomFunction }) => {
   const [activeTab, setActiveTab] = useState("create");
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
@@ -49,6 +49,9 @@ const AddRoom = () => {
         if (response.status === 200) {
           console.log("Room Joined");
           console.log(response.data);
+          setOpen(false);
+          callGetRoomFunction();
+
           //   getRooms();
         }
       } catch (error) {
@@ -78,6 +81,7 @@ const AddRoom = () => {
           console.log("Room Created");
           console.log(response.data.id);
           console.log(response.data);
+
           joinRoom(response.data.id);
         }
       } catch (error) {
@@ -106,7 +110,7 @@ const AddRoom = () => {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className=" bg-[#18181b] h-9 rounded-md px-3 text-white underline-offset-4 text-sm font-medium  hover:underline">
           Create or Join Room
         </DialogTrigger>

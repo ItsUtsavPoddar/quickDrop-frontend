@@ -7,8 +7,14 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { ScrollArea } from "./ui/scroll-area";
+import { forwardRef, useImperativeHandle } from "react";
 
-export default function Rooms() {
+const Rooms = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    someFunction() {
+      getRooms();
+    },
+  }));
   const [searchTerm, setSearchTerm] = useState("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -75,20 +81,12 @@ export default function Rooms() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className=" bg-[#171717] text-white border-0 ">
-        <div className="bg-gray-950 border-0 p-4">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="bg-gray-500 border-0 p-4 h-[calc(100vh-32px)] ">
+          <div className="mb-4 flex items-center justify-between ">
             <h2 className="text-lg font-medium">Your Rooms</h2>
-            <div className="flex items-center gap-2">
-              <Input
-                type="text"
-                placeholder="Search rooms..."
-                className="h-8 w-40 rounded-md bg-black px-3  text-sm"
-              />
-              <Button variant="ghost">Add</Button>
-            </div>
           </div>
           <div className="space-y-2 ">
-            <ScrollArea className="h-screen rounded-md ">
+            <ScrollArea className="h-72 rounded-md ">
               {rooms.map((room) => (
                 <Link
                   key={room.id}
@@ -115,7 +113,9 @@ export default function Rooms() {
       </SheetContent>
     </Sheet>
   );
-}
+});
+
+export default Rooms;
 
 function PlusIcon(props) {
   return (

@@ -73,7 +73,7 @@ export default function Chat() {
         {/* BREAK */}
         <div className="flex-1 p-3">
           <Header />
-          <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border">
+          <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500">
             <div className="flex-1 overflow-y-auto p-2 ">
               <div className="grid gap-4 flex-col" ref={messagesEndRef}>
                 {messages.map((msg) =>
@@ -85,7 +85,8 @@ export default function Chat() {
                 )}
               </div>
             </div>
-            <div className="border-t p-4 ">
+
+            <div className="border-0 p-4 ">
               <form className="flex items-center gap-2">
                 <Input
                   id="message"
@@ -226,28 +227,6 @@ function UserPlusIcon(props) {
       <circle cx="9" cy="7" r="4" />
       <line x1="19" x2="19" y1="8" y2="14" />
       <line x1="22" x2="16" y1="11" y2="11" />
-    </svg>
-  );
-}
-
-function WebcamIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="10" r="8" />
-      <circle cx="12" cy="10" r="3" />
-      <path d="M7 22h10" />
-      <path d="M12 22v-4" />
     </svg>
   );
 }
