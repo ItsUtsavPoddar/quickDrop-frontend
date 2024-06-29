@@ -1,15 +1,13 @@
 "use client";
 import Header from "@/components/Header";
-import { useState, useMemo } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import MessageReceived from "./MessageReceived";
 import MessageSent from "./MessageSent";
 import { useEffect, useRef } from "react";
 import axios from "axios";
+import AddRoom from "./AddRoom";
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -21,32 +19,6 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const filteredRooms = useMemo(() => {
-    return [
-      {
-        id: "general",
-        name: "General",
-        description: "Chat about anything",
-        members: 12,
-      },
-      {
-        id: "design",
-        name: "Design",
-        description: "Discuss design topics",
-        members: 8,
-      },
-      {
-        id: "development",
-        name: "Development",
-        description: "Discuss development topics",
-        members: 15,
-      },
-    ].filter((room) =>
-      room.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm]);
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -98,49 +70,6 @@ export default function Chat() {
     <>
       <div className="flex bg-black flex-col h-dvh w-full">
         {/* <div className="flex-1 flex flex-col md:flex-row"> */}
-
-        {/* <div className="hidden lg:grid bg-muted border-r p-4 md:w-1/3 lg:w-1/4">
-            <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-medium">Rooms</h2>
-            <div className="flex items-center gap-2">
-            <Input
-                  type="text"
-                  placeholder="Search rooms..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="h-8 w-40 rounded-md bg-background px-3 text-sm"
-                />
-                <Button variant="ghost" size="icon">
-                  <PlusIcon className="h-5 w-5" />
-                  <span className="sr-only">Create new room</span>
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              {filteredRooms.map((room) => (
-                <Link
-                  key={room.id}
-                  href="#"
-                  className="flex items-center gap-3 rounded-md bg-background px-3 py-2 hover:bg-muted/50"
-                  prefetch={false}
-                >
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>{room.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <p className="font-medium">{room.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {room.description}
-                    </p>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {room.members}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div> */}
         {/* BREAK */}
         <div className="flex-1 p-3">
           <Header />
