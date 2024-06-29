@@ -81,7 +81,7 @@ const Rooms = forwardRef((props, ref) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className=" bg-[#171717] text-white border-0 ">
-        <div className="bg-gray-500 border-0 p-4 h-[calc(100vh-32px)] ">
+        <div className="border-0 p-4 h-[calc(100vh-32px)] ">
           <div className="mb-4 flex items-center justify-between ">
             <h2 className="text-lg font-medium">Your Rooms</h2>
           </div>
@@ -91,7 +91,7 @@ const Rooms = forwardRef((props, ref) => {
                 <Link
                   key={room.id}
                   href="#"
-                  className="flex items-center gap-3 rounded-md bg-black px-3 py-2 hover:bg-muted/50"
+                  className="flex items-center gap-3 rounded-md  px-3 py-2 hover:bg-muted/50"
                   prefetch={false}
                 >
                   <Avatar className="h-8 w-8 text-black">
@@ -117,25 +117,6 @@ const Rooms = forwardRef((props, ref) => {
 
 export default Rooms;
 
-function PlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
-  );
-}
 function MenuIcon(props) {
   return (
     <svg

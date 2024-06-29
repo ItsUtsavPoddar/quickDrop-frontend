@@ -5,6 +5,8 @@ import Chat from "@/components/Chat";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   if (localStorage.getItem("token") || localStorage.getItem("guestId")) {
     return (
       <main className="text-white font-custMontFont bg-slate-950 ">
@@ -12,7 +14,7 @@ export default function Home() {
       </main>
     );
   }
-  const router = useRouter();
+
   router.push("/auth");
   return <></>;
 }

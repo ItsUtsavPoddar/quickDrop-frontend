@@ -114,9 +114,9 @@ const AddRoom = ({ callGetRoomFunction }) => {
         <DialogTrigger className=" bg-[#18181b] h-9 rounded-md px-3 text-white underline-offset-4 text-sm font-medium  hover:underline">
           Create or Join Room
         </DialogTrigger>
-        <DialogContent className="max-h-[80vh]  bg-[#000000] border-0 text-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
-          <DialogTitle>s</DialogTitle>
-          <Card className="max-w-md mx-auto">
+        <DialogContent className="max-h-[80vh]  bg-[#000336] border-0 text-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
+          <DialogTitle></DialogTitle>
+          <Card className="max-w-md mx-auto ">
             <CardHeader>
               <CardTitle>Create or Join a Chat Room</CardTitle>
               <CardDescription>
