@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import {
@@ -24,7 +25,7 @@ import axios from "axios";
 
 const AddRoom = () => {
   const [activeTab, setActiveTab] = useState("create");
-  const [rooms, setRooms] = useState([]);
+  const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [roomId, setRoomId] = useState("");
 
@@ -110,6 +111,7 @@ const AddRoom = () => {
           Create or Join Room
         </DialogTrigger>
         <DialogContent className="max-h-[80vh]  bg-[#000000] border-0 text-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
+          <DialogTitle>s</DialogTitle>
           <Card className="max-w-md mx-auto">
             <CardHeader>
               <CardTitle>Create or Join a Chat Room</CardTitle>
@@ -140,8 +142,9 @@ const AddRoom = () => {
                           onChange={(e) => setRoomId(e.target.value)}
                         />
                       </div>
+
                       <Button
-                        type="submit"
+                        type="button"
                         className="w-full"
                         onClick={(e) => {
                           e.preventDefault();

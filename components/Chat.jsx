@@ -94,7 +94,7 @@ export default function Chat() {
                 />
                 <Button type="submit" onClick={getMessages}>
                   <SendIcon className="h-5 w-5" />
-                  <span className="sr-only">Send message</span>
+                  <span className="">Send message</span>
                 </Button>
               </form>
             </div>
