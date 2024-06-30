@@ -13,7 +13,7 @@ export default function Auth() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const [guestId, setGuestId] = useState("lol");
+  const [guestId, setGuestId] = useState("LMAO");
 
   async function login(e) {
     e.preventDefault();
@@ -31,6 +31,9 @@ export default function Auth() {
       if (response.data.token) {
         console.log("Token is received from the backend"); // Token is received from the backend
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", username);
+        setUsername("");
+        setPassword("");
         router.push("/"); // Redirect to dashboard
       }
     } catch (error) {

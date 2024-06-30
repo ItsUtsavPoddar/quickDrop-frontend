@@ -83,7 +83,8 @@ export default function Chat() {
             <div className="flex-1 overflow-y-auto p-2 ">
               <div className="grid gap-4 flex-col" ref={messagesEndRef}>
                 {messages.map((msg) =>
-                  msg.username === "utsav" ? (
+                  msg.username === localStorage.getItem("username") ||
+                  localStorage.getItem("guestId") ? (
                     <MessageSent key={msg.id} data={msg} />
                   ) : (
                     <MessageReceived key={msg.id} data={msg} />
