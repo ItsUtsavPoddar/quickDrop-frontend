@@ -5,8 +5,9 @@ import Rooms from "./Rooms";
 import AddRoom from "./AddRoom";
 import { useRef } from "react";
 
-const Header = () => {
+const Header = ({ onSelectRoom }) => {
   const roomsRef = useRef();
+  const router = useRouter();
 
   const callGetRoomFunction = () => {
     if (roomsRef.current) {
@@ -14,7 +15,6 @@ const Header = () => {
     }
   };
 
-  const router = useRouter();
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("guestId");
@@ -24,7 +24,7 @@ const Header = () => {
     <>
       <div className="font-cust  text-white  top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-3 bg-[#0a0a0a] bg-opacity-95 text-lg">
         <div className="text-xl  font-light">
-          <Rooms ref={roomsRef} />
+          <Rooms ref={roomsRef} onSelectRoom={onSelectRoom} />
         </div>
         <nav className="  gap-4 justify-center flex">
           <AddRoom callGetRoomFunction={callGetRoomFunction} />

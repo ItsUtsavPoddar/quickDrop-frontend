@@ -9,41 +9,14 @@ import axios from "axios";
 import { ScrollArea } from "./ui/scroll-area";
 import { forwardRef, useImperativeHandle } from "react";
 
-const Rooms = forwardRef((props, ref) => {
+const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
   useImperativeHandle(ref, () => ({
     someFunction() {
       getRooms();
     },
   }));
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [roomName, setRoomName] = useState("");
 
-  const filteredRooms = useMemo(() => {
-    return [
-      {
-        id: "general",
-        name: "General",
-        description: "Chat about anything",
-        members: 12,
-      },
-      {
-        id: "design",
-        name: "Design",
-        description: "Discuss design topics",
-        members: 8,
-      },
-      {
-        id: "development",
-        name: "Development",
-        description: "Discuss development topics",
-        members: 15,
-      },
-    ].filter((room) =>
-      room.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm]);
+  const [rooms, setRooms] = useState([]);
 
   async function getRooms() {
     if (localStorage.getItem("token")) {
@@ -93,6 +66,10 @@ const Rooms = forwardRef((props, ref) => {
                   href="#"
                   className="flex items-center gap-3 rounded-md  px-3 py-2 hover:bg-muted/50"
                   prefetch={false}
+                  onClick={() => {
+                    console.log("FROM ROOMS", room.id);
+                    onSelectRoom(room.id);
+                  }}
                 >
                   <Avatar className="h-8 w-8 text-black">
                     <AvatarImage src="/placeholder-user.jpg" />

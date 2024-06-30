@@ -8,26 +8,31 @@ import MessageSent from "./MessageSent";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import AddRoom from "./AddRoom";
+import { set } from "react-hook-form";
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
+  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [content, setContent] = useState("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    getMessages();
+  }, [selectedRoomId]);
 
   async function sendMessage(e) {
     e.preventDefault();
+
+    console.log(content, selectedRoomId);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/`,
         {
-          content: "testefe",
-          roomId: "gktFE6",
+          content: content,
+          roomId: selectedRoomId,
         },
         {
           headers: {
@@ -37,18 +42,19 @@ export default function Chat() {
       );
 
       if (response.status === 200) {
+        setContent("");
         console.log("Message Sent");
       }
     } catch (error) {
+      setContent("");
       throw error;
     }
   }
-  async function getMessages(e) {
-    e.preventDefault();
 
+  async function getMessages() {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/Prv5qB`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoomId}`,
 
         {
           headers: {
@@ -72,7 +78,7 @@ export default function Chat() {
         {/* <div className="flex-1 flex flex-col md:flex-row"> */}
         {/* BREAK */}
         <div className="flex-1 p-3">
-          <Header />
+          <Header onSelectRoom={setSelectedRoomId} />
           <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500">
             <div className="flex-1 overflow-y-auto p-2 ">
               <div className="grid gap-4 flex-col" ref={messagesEndRef}>
@@ -91,9 +97,11 @@ export default function Chat() {
                 <Input
                   id="message"
                   placeholder="Type your message..."
-                  className="flex-1"
+                  className="flex-1 text-black"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
                 />
-                <Button type="submit" onClick={getMessages}>
+                <Button type="submit" onClick={sendMessage}>
                   <SendIcon className="h-5 w-5" />
                   <span className="">Send message</span>
                 </Button>

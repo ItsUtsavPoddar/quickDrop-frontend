@@ -76,15 +76,16 @@ const AddRoom = ({ callGetRoomFunction }) => {
             },
           }
         );
-        setRoomName("");
+
         if (response.status === 200) {
           console.log("Room Created");
           console.log(response.data.id);
           console.log(response.data);
-
+          setRoomName("");
           joinRoom(response.data.id);
         }
       } catch (error) {
+        setRoomName("");
         throw error;
       }
     } else {
