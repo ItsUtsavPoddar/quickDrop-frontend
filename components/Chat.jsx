@@ -15,15 +15,19 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [selectedRoomId, setSelectedRoomId] = useState("");
   const [content, setContent] = useState("");
-
   useEffect(() => {
-    if (messagesEndRef) {
-      messagesEndRef.current.addEventListener("DOMNodeInserted", (event) => {
-        const { currentTarget: target } = event;
-        target.scroll({ top: target.scrollHeight, behavior: "smooth" });
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      console.log("AAAAAAAAAAAAAAAAAAA");
+      messagesEndRef.current.scrollTo({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: "smooth",
       });
     }
-  }, [messages]);
+  };
 
   useEffect(() => {
     getMessages();
@@ -86,11 +90,8 @@ export default function Chat() {
         {/* BREAK */}
         <div className="flex-1 p-3">
           <Header onSelectRoom={setSelectedRoomId} />
-          <div
-            ref={messagesEndRef}
-            className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500"
-          >
-            <div className="flex-1 overflow-y-auto p-2 ">
+          <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500">
+            <div className="flex-1 overflow-y-auto p-2 " ref={messagesEndRef}>
               <div className="grid gap-4 flex-col">
                 {messages.map((msg) =>
                   msg.username.toLowerCase() ===
