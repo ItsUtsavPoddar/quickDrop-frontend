@@ -9,15 +9,21 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import AddRoom from "./AddRoom";
 import { set } from "react-hook-form";
+
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [selectedRoomId, setSelectedRoomId] = useState("");
   const [content, setContent] = useState("");
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    if (messagesEndRef) {
+      messagesEndRef.current.addEventListener("DOMNodeInserted", (event) => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight, behavior: "smooth" });
+      });
+    }
+  }, [messages]);
 
   useEffect(() => {
     getMessages();
@@ -44,6 +50,7 @@ export default function Chat() {
       if (response.status === 200) {
         setContent("");
         console.log("Message Sent");
+        getMessages();
       }
     } catch (error) {
       setContent("");
@@ -79,9 +86,12 @@ export default function Chat() {
         {/* BREAK */}
         <div className="flex-1 p-3">
           <Header onSelectRoom={setSelectedRoomId} />
-          <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500">
+          <div
+            ref={messagesEndRef}
+            className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500"
+          >
             <div className="flex-1 overflow-y-auto p-2 ">
-              <div className="grid gap-4 flex-col" ref={messagesEndRef}>
+              <div className="grid gap-4 flex-col">
                 {messages.map((msg) =>
                   msg.username.toLowerCase() ===
                   localStorage.getItem("username").toLowerCase() ? (
