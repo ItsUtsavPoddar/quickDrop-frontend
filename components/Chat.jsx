@@ -1,4 +1,6 @@
 "use client";
+import { io } from "socket.io-client";
+
 import Header from "@/components/Header";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +11,7 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import AddRoom from "./AddRoom";
 import { set } from "react-hook-form";
-
+import { socket } from "../utils/socket";
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -18,6 +20,53 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // const socket = io("http://localhost:4000");
+  socket.on("connect", () => {
+    console.log(`Connected to server with id: ${socket.id}`);
+  });
+  socket.emit("joinRoom", selectedRoomId);
+  socket.on("receiveMessage", (newMessage) => {
+    console.log("revieved message");
+    console.log(newMessage);
+    setMessages([...messages, newMessage]);
+  });
+
+  async function sendMessage(e) {
+    e.preventDefault();
+
+    console.log(content, selectedRoomId);
+    // try {
+    //   const response = await axios.post(
+    //     `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/`,
+    //     {
+    //       content: content,
+    //       roomId: selectedRoomId,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: "Bearer " + localStorage.getItem("token"),
+    //       },
+    //     }
+    //   );
+
+    //   if (response.status === 200) {
+    //     setContent("");
+    //     console.log("Message Sent");
+    //     getMessages();
+    //   }
+    // } catch (error) {
+    //   setContent("");
+    //   throw error;
+    // }
+    socket.emit("sendMessage", {
+      roomId: selectedRoomId,
+      userId: localStorage.getItem("userId"),
+      content: content,
+    });
+
+    setContent("");
+  }
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -30,40 +79,13 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    console.log("Selected Room Id: ", selectedRoomId);
     getMessages();
   }, [selectedRoomId]);
 
-  async function sendMessage(e) {
-    e.preventDefault();
-
-    console.log(content, selectedRoomId);
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/`,
-        {
-          content: content,
-          roomId: selectedRoomId,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setContent("");
-        console.log("Message Sent");
-        getMessages();
-      }
-    } catch (error) {
-      setContent("");
-      throw error;
-    }
-  }
-
   async function getMessages() {
     try {
+      //console.log(socket.id);
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoomId}`,
 

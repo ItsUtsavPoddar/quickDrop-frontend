@@ -31,6 +31,7 @@ export default function Auth() {
       if (response.data.token) {
         console.log("Token is received from the backend"); // Token is received from the backend
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
         localStorage.setItem("username", username);
         setUsername("");
         setPassword("");

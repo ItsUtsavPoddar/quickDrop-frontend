@@ -8,7 +8,7 @@ import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { ScrollArea } from "./ui/scroll-area";
 import { forwardRef, useImperativeHandle } from "react";
-
+import { socket } from "../utils/socket";
 const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
   useImperativeHandle(ref, () => ({
     someFunction() {
