@@ -119,11 +119,10 @@ export default function Chat() {
               </div>
               <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-t">
                 <div
-                  className="flex-1 overflow-y-auto 
-                 overflow-x-hidden p-2 "
+                  className="flex-1 overflow-y-auto p-2 "
                   ref={messagesEndRef}
                 >
-                  <div className="grid gap-4 flex-col">
+                  <div className="flex gap-4 flex-col">
                     {messages.map((msg) =>
                       msg.username.toLowerCase() ===
                       localStorage.getItem("username").toLowerCase() ? (
