@@ -110,14 +110,14 @@ export default function Chat() {
       <div className="flex bg-black flex-col h-dvh w-full">
         {/* <div className="flex-1 flex flex-col md:flex-row"> */}
         {/* BREAK */}
-        <div className="flex-1 p-3">
+        <div className="flex-1 p-3 bg-black">
           <Header onSelectRoom={setSelectedRoom} />
           {selectedRoom[0] && (
             <div>
               <div className="flex flex-col justify-center items-center pb-2 text-3xl font-medium">
                 {selectedRoom[1]}
               </div>
-              <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-t">
+              <div className="mt-5 flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-t">
                 <div
                   className="flex-1 overflow-y-auto p-2 "
                   ref={messagesEndRef}
