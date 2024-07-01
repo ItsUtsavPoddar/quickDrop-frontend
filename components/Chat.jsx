@@ -15,7 +15,7 @@ import { socket } from "../utils/socket";
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState([]);
   const [content, setContent] = useState("");
   useEffect(() => {
     scrollToBottom();
@@ -25,7 +25,7 @@ export default function Chat() {
   socket.on("connect", () => {
     console.log(`Connected to server with id: ${socket.id}`);
   });
-  socket.emit("joinRoom", selectedRoomId);
+  socket.emit("joinRoom", selectedRoom[0]);
   socket.on("receiveMessage", (newMessage) => {
     console.log("revieved message");
     console.log(newMessage);
@@ -35,7 +35,7 @@ export default function Chat() {
   async function sendMessage(e) {
     e.preventDefault();
 
-    console.log(content, selectedRoomId);
+    console.log(content, selectedRoom[0]);
     // try {
     //   const response = await axios.post(
     //     `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/`,
@@ -60,7 +60,7 @@ export default function Chat() {
     //   throw error;
     // }
     socket.emit("sendMessage", {
-      roomId: selectedRoomId,
+      roomId: selectedRoom[0],
       userId: localStorage.getItem("userId"),
       content: content,
     });
@@ -79,15 +79,15 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    console.log("Selected Room Id: ", selectedRoomId);
+    console.log("Selected Room Id: ", selectedRoom[0]);
     getMessages();
-  }, [selectedRoomId]);
+  }, [selectedRoom]);
 
   async function getMessages() {
     try {
       //console.log(socket.id);
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoomId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoom[0]}`,
 
         {
           headers: {
@@ -111,38 +111,53 @@ export default function Chat() {
         {/* <div className="flex-1 flex flex-col md:flex-row"> */}
         {/* BREAK */}
         <div className="flex-1 p-3">
-          <Header onSelectRoom={setSelectedRoomId} />
-          <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-zinc-500">
-            <div className="flex-1 overflow-y-auto p-2 " ref={messagesEndRef}>
-              <div className="grid gap-4 flex-col">
-                {messages.map((msg) =>
-                  msg.username.toLowerCase() ===
-                  localStorage.getItem("username").toLowerCase() ? (
-                    <MessageSent key={msg.id} data={msg} />
-                  ) : (
-                    <MessageReceived key={msg.id} data={msg} />
-                  )
-                )}
+          <Header onSelectRoom={setSelectedRoom} />
+          {selectedRoom[0] && (
+            <div>
+              <div className="flex flex-col justify-center items-center pb-2 text-3xl font-medium">
+                {selectedRoom[1]}
               </div>
-            </div>
+              <div className="flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border">
+                <div
+                  className="flex-1 overflow-y-auto p-2 "
+                  ref={messagesEndRef}
+                >
+                  <div className="grid gap-4 flex-col">
+                    {messages.map((msg) =>
+                      msg.username.toLowerCase() ===
+                      localStorage.getItem("username").toLowerCase() ? (
+                        <MessageSent key={msg.id} data={msg} />
+                      ) : (
+                        <MessageReceived key={msg.id} data={msg} />
+                      )
+                    )}
+                  </div>
+                </div>
 
-            <div className="border-0 p-4 ">
-              <form className="flex items-center gap-2">
-                <Input
-                  id="message"
-                  placeholder="Type your message..."
-                  className="flex-1 text-black"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-                <Button type="submit" onClick={sendMessage}>
-                  <SendIcon className="h-5 w-5" />
-                  <span className="">Send message</span>
-                </Button>
-              </form>
+                <div className="border-0 p-4 ">
+                  <form className="flex items-center gap-2">
+                    <Input
+                      id="message"
+                      placeholder="Type your message..."
+                      className="flex-1 text-black"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                    />
+                    <Button type="submit" onClick={sendMessage}>
+                      <SendIcon className="h-5 w-5" />
+                      <span className="">Send message</span>
+                    </Button>
+                  </form>
+                </div>
+              </div>
+              {/* </div> */}
             </div>
-          </div>
-          {/* </div> */}
+          )}
+          {!selectedRoom[0] && (
+            <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
+              Select Room to Display
+            </div>
+          )}
         </div>
       </div>
     </>

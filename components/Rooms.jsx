@@ -68,7 +68,7 @@ const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
                   prefetch={false}
                   onClick={() => {
                     console.log("FROM ROOMS", room.id);
-                    onSelectRoom(room.id);
+                    onSelectRoom([room.id, room.name]);
                   }}
                 >
                   <Avatar className="h-8 w-8 text-black">
