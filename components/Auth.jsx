@@ -1,23 +1,27 @@
 "use client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import api from "../utils/api";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
+import Header from "./Header";
 
 export default function Auth() {
   const [activeTab, setActiveTab] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [guestId, setGuestId] = useState("LMAO");
+  const [loading, setLoading] = useState(false);
+  const [loadingGuest, setLoadingGuest] = useState(false);
+
   const router = useRouter();
 
   async function login(e) {
     e.preventDefault();
     // Handle form for login to .env api using axios
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -39,11 +43,15 @@ export default function Auth() {
       }
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
   async function register(e) {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -63,10 +71,14 @@ export default function Auth() {
       }
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
   async function guest() {
+    setLoadingGuest(true);
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/users/guest`,
@@ -81,6 +93,8 @@ export default function Auth() {
       }
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -105,6 +119,7 @@ export default function Auth() {
               : "Sign up Or Be Anonymous"}
           </h2>
         </div>
+
         <Tabs
           defaultValue={activeTab}
           className="w-full"
@@ -140,7 +155,7 @@ export default function Auth() {
                 />
               </div>
               <Button type="submit" className="w-full" onClick={login}>
-                Sign in
+                {loading ? <Loader /> : "Sign in"}
               </Button>
             </form>
           </TabsContent>
@@ -169,14 +184,14 @@ export default function Auth() {
                 />
               </div>
               <Button type="submit" className="w-full" onClick={register}>
-                Sign up
+                {loading ? <Loader /> : "Sign up"}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
         <div className="flex justify-center">
           <Button type="submit" className="w-full" onClick={guest}>
-            Be Anonymous
+            {loadingGuest ? <Loader /> : "Be Anonymous"}
           </Button>
         </div>
       </div>

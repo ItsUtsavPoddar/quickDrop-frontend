@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Loader from "./Loader";
 
 const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   const [activeTab, setActiveTab] = useState("create");
@@ -30,6 +31,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   const [roomId, setRoomId] = useState("");
   const [roomType, setRoomType] = useState("anonymous");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -38,6 +40,8 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   }, []);
 
   async function joinRoom(rid) {
+    setLoading(true);
+
     try {
       if (localStorage.getItem("token")) {
         console.log("HOPELESS", rid);
@@ -77,11 +81,15 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
     } catch (error) {
       setRoomId("");
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
   async function createRoom(e) {
     e.preventDefault();
+    setLoading(true);
+
     try {
       let response = {};
       if (localStorage.getItem("token") && roomType === "public") {
@@ -129,6 +137,8 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
     } catch (error) {
       setRoomName("");
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -179,7 +189,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                           joinRoom();
                         }}
                       >
-                        Join Chat Room
+                        {loading ? <Loader /> : "Join Chat Room"}
                       </Button>
                     </form>
                   </TabsContent>
@@ -228,7 +238,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                         className="w-full"
                         onClick={createRoom}
                       >
-                        Create Chat Room
+                        {loading ? <Loader /> : "Create Chat Room"}
                       </Button>
                     </form>
                   </TabsContent>

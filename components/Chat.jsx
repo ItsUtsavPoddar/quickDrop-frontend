@@ -9,16 +9,20 @@ import MessageSent from "./MessageSent";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { socket } from "../utils/socket";
+import LoaderChat from "./LoaderChat";
+import { LoaderChatSmall } from "./LoaderChat";
 
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState([]);
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState(false);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, loadingMessage]);
 
   socket.on("connect", () => {
     console.log(`Connected to server with id: ${socket.id}`);
@@ -30,10 +34,12 @@ export default function Chat() {
     console.log("revieved message");
     console.log(newMessage);
     setMessages([...messages, newMessage]);
+    setLoadingMessage(false);
   });
 
   async function sendMessage(e) {
     e.preventDefault();
+    setLoadingMessage(true);
 
     console.log(content, selectedRoom[0]);
     // try {
@@ -94,6 +100,7 @@ export default function Chat() {
   }, [selectedRoom]);
 
   async function getMessages() {
+    setLoading(true);
     try {
       let response = {};
       if (selectedRoom[2] === "public") {
@@ -120,6 +127,8 @@ export default function Chat() {
       }
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -130,7 +139,7 @@ export default function Chat() {
         {/* BREAK */}
         <div className="flex-1 p-3 bg-black">
           <Header onSelectRoom={setSelectedRoom} />
-          {selectedRoom[0] && (
+          {!loading && selectedRoom[0] && (
             <div>
               <div className="flex flex-col justify-center items-center pb-2 text-3xl font-medium">
                 {selectedRoom[1]}
@@ -161,6 +170,9 @@ export default function Chat() {
                         <MessageReceived key={msg.id} data={msg} />
                       );
                     })}
+                    {loadingMessage && (
+                      <LoaderChatSmall className="pt-0 grid" />
+                    )}
                   </div>
                 </div>
 
@@ -183,11 +195,14 @@ export default function Chat() {
               {/* </div> */}
             </div>
           )}
-          {!selectedRoom[0] && (
-            <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
-              Select Room to Display
-            </div>
+          {!loading && !selectedRoom[0] && (
+            <>
+              <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
+                Select Room to Display
+              </div>
+            </>
           )}
+          {loading && selectedRoom[0] && <LoaderChat />}
         </div>
       </div>
     </>
