@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -29,6 +29,13 @@ const AddRoom = ({ callGetRoomFunction }) => {
   const [roomName, setRoomName] = useState("");
   const [roomId, setRoomId] = useState("");
   const [roomType, setRoomType] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   async function joinRoom(rid) {
     if (!rid) {
@@ -180,7 +187,7 @@ const AddRoom = ({ callGetRoomFunction }) => {
                             console.log(value); // Debug log
                           }}
                         >
-                          {localStorage.getItem("token") && (
+                          {isAuthenticated && (
                             <Label
                               htmlFor="public"
                               className="flex items-center gap-2 cursor-pointer"
