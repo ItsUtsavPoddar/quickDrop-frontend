@@ -28,7 +28,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [roomId, setRoomId] = useState("");
-  const [roomType, setRoomType] = useState("");
+  const [roomType, setRoomType] = useState("anonymous");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -38,14 +38,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   }, []);
 
   async function joinRoom(rid) {
-    if (!rid) {
-      rid = roomId;
-      setRoomId("");
-    }
     try {
       if (localStorage.getItem("token")) {
+        console.log("HOPELESS", rid);
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join/${rid}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join/${roomId || rid}`,
           {},
           {
             headers: {
@@ -55,25 +52,30 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
         );
 
         if (response.status === 200) {
-          console.log("Public Room Joined");
+          console.log("Room Joined");
           console.log(response.data);
+          setRoomId("");
           setOpen(false);
           getRooms();
         }
       } else {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join-anonymous/${rid}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join-anonymous/${
+            roomId || rid
+          }`,
           {}
         );
 
         if (response.status === 200) {
-          console.log("Anonymous Room Joined");
+          console.log(" Room Joined");
           console.log(response.data);
+          setRoomId("");
           addAnonymousRoom(response.data);
           setOpen(false);
         }
       }
     } catch (error) {
+      setRoomId("");
       throw error;
     }
   }
@@ -114,6 +116,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
           console.log("Anonymous Room Created");
           console.log(response.data.id);
           console.log(response.data);
+          if (localStorage.getItem("token")) {
+            setRoomName("");
+            joinRoom(response.data.id);
+            return;
+          }
           addAnonymousRoom(response.data);
           setOpen(false);
           setRoomName("");
@@ -165,7 +172,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                       </div>
 
                       <Button
-                        type="button"
+                        type="ghost"
                         className="w-full"
                         onClick={(e) => {
                           e.preventDefault();
@@ -212,7 +219,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                             className="flex items-center gap-2 cursor-pointer"
                           >
                             <RadioGroupItem id="anonymous" value="anonymous" />
-                            anonymous
+                            Anonymous
                           </Label>
                         </RadioGroup>
                       </div>
