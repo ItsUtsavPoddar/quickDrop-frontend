@@ -59,13 +59,23 @@ export default function Chat() {
     //   setContent("");
     //   throw error;
     // }
-    socket.emit("sendMessage", {
-      roomId: selectedRoom[0],
-      userId: localStorage.getItem("userId"),
-      content: content,
-    });
+    if (localStorage.getItem("token")) {
+      socket.emit("sendMessage", {
+        roomId: selectedRoom[0],
+        userId: localStorage.getItem("userId"),
+        content: content,
+      });
 
-    setContent("");
+      setContent("");
+    } else {
+      socket.emit("sendAnonymousMessage", {
+        roomId: selectedRoom[0],
+        guestName: localStorage.getItem("guestId"),
+        content: content,
+      });
+
+      setContent("");
+    }
   }
 
   const scrollToBottom = () => {
@@ -85,19 +95,27 @@ export default function Chat() {
 
   async function getMessages() {
     try {
-      //console.log(socket.id);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoom[0]}`,
+      let response = {};
+      if (selectedRoom[2] === "public") {
+        //console.log(socket.id);
+        response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoom[0]}`,
 
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+      } else {
+        response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/anonymous/${selectedRoom[0]}`
+        );
+      }
 
       if (response.status === 200) {
-        console.log("Messages Received");
+        console.log("Messages Received", selectedRoom);
+        console.log(response.data);
         setMessages(response.data);
       }
     } catch (error) {
@@ -123,14 +141,26 @@ export default function Chat() {
                   ref={messagesEndRef}
                 >
                   <div className="flex gap-4 flex-col">
-                    {messages.map((msg) =>
-                      msg.username.toLowerCase() ===
-                      localStorage.getItem("username").toLowerCase() ? (
+                    {messages.map((msg) => {
+                      const storedUsername = localStorage.getItem("username");
+                      const storedGuestId = localStorage.getItem("guestId");
+
+                      const isCurrentUser =
+                        (storedUsername &&
+                          msg.username &&
+                          msg.username.toLowerCase() ===
+                            storedUsername.toLowerCase()) ||
+                        (storedGuestId &&
+                          msg.guestName &&
+                          msg.guestName.toLowerCase() ===
+                            storedGuestId.toLowerCase());
+
+                      return isCurrentUser ? (
                         <MessageSent key={msg.id} data={msg} />
                       ) : (
                         <MessageReceived key={msg.id} data={msg} />
-                      )
-                    )}
+                      );
+                    })}
                   </div>
                 </div>
 

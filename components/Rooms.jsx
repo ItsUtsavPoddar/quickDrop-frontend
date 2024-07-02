@@ -9,42 +9,7 @@ import axios from "axios";
 import { ScrollArea } from "./ui/scroll-area";
 import { forwardRef, useImperativeHandle } from "react";
 import { socket } from "../utils/socket";
-const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
-  useImperativeHandle(ref, () => ({
-    someFunction() {
-      getRooms();
-    },
-  }));
-
-  const [rooms, setRooms] = useState([]);
-
-  async function getRooms() {
-    if (localStorage.getItem("token")) {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          console.log("Rooms Received");
-          console.log(response.data);
-          setRooms(response.data);
-        }
-      } catch (error) {
-        throw error;
-      }
-    }
-  }
-
-  useEffect(() => {
-    getRooms();
-  }, []);
-
+const Rooms = ({ onSelectRoom, rooms }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -68,7 +33,7 @@ const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
                   prefetch={false}
                   onClick={() => {
                     console.log("FROM ROOMS", room.id);
-                    onSelectRoom([room.id, room.name]);
+                    onSelectRoom([room.id, room.name, room.type]);
                   }}
                 >
                   <Avatar className="h-8 w-8 text-black">
@@ -90,7 +55,7 @@ const Rooms = forwardRef(({ onSelectRoom, ...props }, ref) => {
       </SheetContent>
     </Sheet>
   );
-});
+};
 
 export default Rooms;
 

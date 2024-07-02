@@ -18,11 +18,17 @@ const MessageReceived = ({ data }) => {
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 text-black">
           <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>{data.username[0].toUpperCase()}</AvatarFallback>
+          <AvatarFallback>
+            {data.username
+              ? data.username[0].toUpperCase()
+              : data.guestName
+              ? data.guestName[0].toUpperCase()
+              : ""}
+          </AvatarFallback>
         </Avatar>
         <div className="grid gap-1">
           <div className="flex items-center gap-2">
-            <p className="font-medium">{data.username}</p>
+            <p className="font-medium">{data.username || data.guestName}</p>
             <p className="text-xs text-muted-foreground">
               {convertToLocalTime(data.createdAt)}
             </p>

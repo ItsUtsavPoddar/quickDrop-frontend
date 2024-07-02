@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-const AddRoom = ({ callGetRoomFunction }) => {
+const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   const [activeTab, setActiveTab] = useState("create");
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
@@ -42,8 +42,8 @@ const AddRoom = ({ callGetRoomFunction }) => {
       rid = roomId;
       setRoomId("");
     }
-    if (localStorage.getItem("token")) {
-      try {
+    try {
+      if (localStorage.getItem("token")) {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join/${rid}`,
           {},
@@ -55,22 +55,35 @@ const AddRoom = ({ callGetRoomFunction }) => {
         );
 
         if (response.status === 200) {
-          console.log("Room Joined");
+          console.log("Public Room Joined");
           console.log(response.data);
           setOpen(false);
-          callGetRoomFunction();
+          getRooms();
         }
-      } catch (error) {
-        throw error;
+      } else {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/join-anonymous/${rid}`,
+          {}
+        );
+
+        if (response.status === 200) {
+          console.log("Anonymous Room Joined");
+          console.log(response.data);
+          addAnonymousRoom(response.data);
+          setOpen(false);
+        }
       }
+    } catch (error) {
+      throw error;
     }
   }
 
   async function createRoom(e) {
     e.preventDefault();
-    if (localStorage.getItem("token") && roomType === "public") {
-      try {
-        const response = await axios.post(
+    try {
+      let response = {};
+      if (localStorage.getItem("token") && roomType === "public") {
+        response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms`,
           {
             name: roomName,
@@ -82,36 +95,33 @@ const AddRoom = ({ callGetRoomFunction }) => {
             },
           }
         );
-
         if (response.status === 200) {
-          console.log("Room Created");
+          console.log("Public Room Created");
           console.log(response.data.id);
           console.log(response.data);
           setRoomName("");
           joinRoom(response.data.id);
         }
-      } catch (error) {
-        setRoomName("");
-        throw error;
-      }
-    } else {
-      try {
-        const response = await axios.post(
+      } else {
+        response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms/anonymous`,
           {
             name: roomName,
             type: "anonymous",
           }
         );
-
         if (response.status === 200) {
-          console.log("Room Added");
-
+          console.log("Anonymous Room Created");
+          console.log(response.data.id);
           console.log(response.data);
+          addAnonymousRoom(response.data);
+          setOpen(false);
+          setRoomName("");
         }
-      } catch (error) {
-        throw error;
       }
+    } catch (error) {
+      setRoomName("");
+      throw error;
     }
   }
 
@@ -198,11 +208,11 @@ const AddRoom = ({ callGetRoomFunction }) => {
                           )}
 
                           <Label
-                            htmlFor="private"
+                            htmlFor="anonymous"
                             className="flex items-center gap-2 cursor-pointer"
                           >
-                            <RadioGroupItem id="private" value="private" />
-                            Private
+                            <RadioGroupItem id="anonymous" value="anonymous" />
+                            anonymous
                           </Label>
                         </RadioGroup>
                       </div>

@@ -20,7 +20,7 @@ const MessageSent = ({ data }) => {
             <p className="text-xs text-muted-foreground">
               {convertToLocalTime(data.createdAt)}
             </p>
-            <p className="font-medium">{data.username}</p>
+            <p className="font-medium">{data.username || data.guestName}</p>
           </div>
           <div className="bg-primary text-primary-foreground rounded-md px-4 py-2">
             <p>{data.content}</p>
@@ -28,7 +28,13 @@ const MessageSent = ({ data }) => {
         </div>
         <Avatar className="h-10 w-10 text-black">
           <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>{data.username[0].toUpperCase()}</AvatarFallback>
+          <AvatarFallback>
+            {data.username
+              ? data.username[0].toUpperCase()
+              : data.guestName
+              ? data.guestName[0].toUpperCase()
+              : ""}
+          </AvatarFallback>
         </Avatar>
       </div>
     </div>
