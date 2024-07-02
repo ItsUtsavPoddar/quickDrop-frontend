@@ -17,6 +17,8 @@ const Header = ({ onSelectRoom }) => {
 
   function logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     localStorage.removeItem("guestId");
     router.push("/auth");
   }

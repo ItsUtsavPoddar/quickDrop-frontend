@@ -28,6 +28,7 @@ const AddRoom = ({ callGetRoomFunction }) => {
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [roomId, setRoomId] = useState("");
+  const [roomType, setRoomType] = useState("");
 
   async function joinRoom(rid) {
     if (!rid) {
@@ -51,8 +52,6 @@ const AddRoom = ({ callGetRoomFunction }) => {
           console.log(response.data);
           setOpen(false);
           callGetRoomFunction();
-
-          //   getRooms();
         }
       } catch (error) {
         throw error;
@@ -62,7 +61,7 @@ const AddRoom = ({ callGetRoomFunction }) => {
 
   async function createRoom(e) {
     e.preventDefault();
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") && roomType === "public") {
       try {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms`,
@@ -119,7 +118,7 @@ const AddRoom = ({ callGetRoomFunction }) => {
           <DialogTitle></DialogTitle>
           <Card className="max-w-md mx-auto ">
             <CardHeader>
-              <CardTitle>Create or Join a Chat Room</CardTitle>
+              <CardTitle>Create or Join a Chat Room </CardTitle>
               <CardDescription>
                 Choose to create a new chat room or join an existing one.
               </CardDescription>
@@ -174,16 +173,23 @@ const AddRoom = ({ callGetRoomFunction }) => {
                       <div className="space-y-2">
                         <Label>Room Type</Label>
                         <RadioGroup
-                          defaultValue="public"
+                          value={roomType}
                           className="flex items-center gap-4"
+                          onValueChange={(value) => {
+                            setRoomType(value);
+                            console.log(value); // Debug log
+                          }}
                         >
-                          <Label
-                            htmlFor="public"
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <RadioGroupItem id="public" value="public" />
-                            Public
-                          </Label>
+                          {localStorage.getItem("token") && (
+                            <Label
+                              htmlFor="public"
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <RadioGroupItem id="public" value="public" />
+                              Public
+                            </Label>
+                          )}
+
                           <Label
                             htmlFor="private"
                             className="flex items-center gap-2 cursor-pointer"

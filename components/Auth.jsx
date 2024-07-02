@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../utils/api";
 import { useRouter } from "next/navigation";
@@ -12,8 +12,8 @@ export default function Auth() {
   const [activeTab, setActiveTab] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
   const [guestId, setGuestId] = useState("LMAO");
+  const router = useRouter();
 
   async function login(e) {
     e.preventDefault();
@@ -83,6 +83,18 @@ export default function Auth() {
       throw error;
     }
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("token") && localStorage.getItem("guestId")) {
+      localStorage.clear();
+    } else if (
+      localStorage.getItem("token") ||
+      localStorage.getItem("guestId")
+    ) {
+      router.push("/");
+    }
+  }, [router]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#2E151B] text-black px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">

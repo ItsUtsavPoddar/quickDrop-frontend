@@ -1,5 +1,4 @@
 "use client";
-import { io } from "socket.io-client";
 
 import Header from "@/components/Header";
 import { useState } from "react";
@@ -9,23 +8,24 @@ import MessageReceived from "./MessageReceived";
 import MessageSent from "./MessageSent";
 import { useEffect, useRef } from "react";
 import axios from "axios";
-import AddRoom from "./AddRoom";
-import { set } from "react-hook-form";
 import { socket } from "../utils/socket";
+
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState([]);
   const [content, setContent] = useState("");
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  // const socket = io("http://localhost:4000");
   socket.on("connect", () => {
     console.log(`Connected to server with id: ${socket.id}`);
   });
+
   socket.emit("joinRoom", selectedRoom[0]);
+
   socket.on("receiveMessage", (newMessage) => {
     console.log("revieved message");
     console.log(newMessage);

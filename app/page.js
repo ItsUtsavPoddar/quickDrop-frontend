@@ -10,12 +10,15 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("token") || localStorage.getItem("guestId")) {
-      // setIsAuthenticated(true);
-    } else {
+    if (
+      (localStorage.getItem("token") && localStorage.getItem("guestId")) ||
+      (!localStorage.getItem("token") && !localStorage.getItem("guestId"))
+    ) {
+      localStorage.clear();
       router.push("/auth");
+      // setIsAuthenticated(true);
     }
-  }, [router]);
+  }, []);
 
   // if (!isAuthenticated) {
   //   return null; // Or you can return a loading spinner or a placeholder
