@@ -22,22 +22,44 @@ export default function Chat() {
   const [loadingMessage, setLoadingMessage] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, loadingMessage]);
-
   socket.on("connect", () => {
     console.log(`Connected to server with id: ${socket.id}`);
   });
 
-  socket.emit("joinRoom", selectedRoom?.[0]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loadingMessage]);
 
-  socket.on("receiveMessage", (newMessage) => {
-    console.log("revieved message");
-    console.log(newMessage);
-    setMessages([...messages, newMessage]);
-    setLoadingMessage(false);
-  });
+  useEffect(() => {
+    if (selectedRoom) {
+      console.log("Selected Room Id: ", selectedRoom[0]);
+      socket.emit("joinRoom", selectedRoom?.[0]);
+      setMessages([]);
+      getMessages();
+    }
+  }, [selectedRoom]);
+
+  useEffect(() => {
+    const handleReceiveMessage = (newMessage) => {
+      console.log(
+        "Received message",
+        newMessage,
+        newMessage.roomId,
+        selectedRoom ? selectedRoom[0] : "No room selected"
+      );
+
+      if (selectedRoom && newMessage.roomId === selectedRoom[0]) {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      }
+      setLoadingMessage(false);
+    };
+
+    socket.on("receiveMessage", handleReceiveMessage);
+
+    return () => {
+      socket.off("receiveMessage", handleReceiveMessage);
+    };
+  }, [selectedRoom]);
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -88,7 +110,6 @@ export default function Chat() {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      console.log("AAAAAAAAAAAAAAAAAAA");
       messagesEndRef.current.scrollTo({
         top: messagesEndRef.current.scrollHeight,
         behavior: "smooth",
@@ -96,19 +117,11 @@ export default function Chat() {
     }
   };
 
-  useEffect(() => {
-    if (selectedRoom) {
-      console.log("Selected Room Id: ", selectedRoom[0]);
-      getMessages();
-    }
-  }, [selectedRoom]);
-
   async function getMessages() {
     setLoading(true);
     try {
       let response = {};
       if (selectedRoom[2] === "public") {
-        //console.log(socket.id);
         response = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/messages/${selectedRoom[0]}`,
 
@@ -219,68 +232,6 @@ export default function Chat() {
   );
 }
 
-function CircleUserIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="10" r="3" />
-      <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
-    </svg>
-  );
-}
-
-function MenuIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  );
-}
-
-function PlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
-  );
-}
-
 function SendIcon(props) {
   return (
     <svg
@@ -297,48 +248,6 @@ function SendIcon(props) {
     >
       <path d="m22 2-7 20-4-9-9-4Z" />
       <path d="M22 2 11 13" />
-    </svg>
-  );
-}
-
-function UserIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}
-
-function UserPlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <line x1="19" x2="19" y1="8" y2="14" />
-      <line x1="22" x2="16" y1="11" y2="11" />
     </svg>
   );
 }
