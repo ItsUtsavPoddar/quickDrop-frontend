@@ -41,6 +41,10 @@ export default function Auth() {
         localStorage.setItem("username", username);
         setUsername("");
         setPassword("");
+        toast({
+          title: "Successfully Logged in! Welcome back",
+          description: "Redirecting to dashboard...",
+        });
         router.push("/"); // Redirect to dashboard
       }
     } catch (error) {
@@ -71,19 +75,33 @@ export default function Auth() {
 
       if (response.status === 200) {
         console.log(e);
+        toast({
+          title: "Successfully Registered!",
+          description: "Logging in...",
+        });
         login(e);
       }
       if (response.status === 400) {
-        console.log("User already exists");
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "User already exists",
+        });
       }
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Check your internet or Server Error",
+      });
       throw error;
     } finally {
       setLoading(false);
     }
   }
 
-  async function guest() {
+  async function guest(e) {
+    e.preventDefault();
     setLoadingGuest(true);
 
     try {
@@ -96,9 +114,18 @@ export default function Auth() {
       console.log(response.data);
       if (response.data.guestId) {
         localStorage.setItem("guestId", response.data.guestId);
+        toast({
+          title: `Successfully Logged in as ${response.data.guestId}!`,
+          description: "Redirecting to dashboard...",
+        });
         router.push("/"); // Redirect to dashboard
       }
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Check your internet or Server Error",
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -118,8 +145,11 @@ export default function Auth() {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center bg-[#2e151b00] text-black px-4 py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen items-start justify-center bg-[#2e151b00] text-black px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
+          <h1 className=" pb-6 text-center text-white  text-5xl font-bold tracking-tight text-background">
+            ChatN'Gone
+          </h1>
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-background">
               {activeTab === "login"
@@ -134,7 +164,7 @@ export default function Auth() {
             value={activeTab}
             onValueChange={setActiveTab}
           >
-            <TabsList className="mb-6 grid w-full grid-cols-2 rounded-lg bg-muted p-1">
+            <TabsList className="mb-6 grid w-full grid-cols-2 rounded-lg bg-[#0000005c] text-white p-1">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Register</TabsTrigger>
             </TabsList>
@@ -164,7 +194,7 @@ export default function Auth() {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full bg-[#444444]"
+                  className="w-full bg-[#7878786e]"
                   onClick={login}
                 >
                   {loading ? <Loader /> : "Sign in"}
@@ -197,7 +227,7 @@ export default function Auth() {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full bg-[#444444]"
+                  className="w-full bg-[#7878786e]"
                   onClick={register}
                 >
                   {loading ? <Loader /> : "Sign up"}
@@ -205,14 +235,26 @@ export default function Auth() {
               </form>
             </TabsContent>
           </Tabs>
-          <div className="flex justify-center">
-            <Button
-              type="submit"
-              className="w-full bg-[#444444]"
-              onClick={guest}
-            >
-              {loadingGuest ? <Loader /> : "Be Anonymous"}
-            </Button>
+
+          <div className="justify-center w-full pt-4">
+            <form className="space-y-4">
+              <Input
+                id="guestId"
+                type="guestId"
+                autoComplete="off"
+                required
+                className="mt-1 block w-full"
+                placeholder="Anonymous Name"
+                onChange={(e) => setGuestId(e.target.value)}
+              />
+              <Button
+                type="submit"
+                className="w-full bg-[#7878786e]"
+                onClick={guest}
+              >
+                {loadingGuest ? <Loader /> : "Be Anonymous"}
+              </Button>
+            </form>
           </div>
         </div>
       </div>

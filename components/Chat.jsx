@@ -12,6 +12,7 @@ import axios from "axios";
 import { socket } from "../utils/socket";
 import LoaderChat from "./LoaderChat";
 import { LoaderChatSmall } from "./LoaderChat";
+import Landing from "./Landing";
 
 export default function Chat() {
   const messagesEndRef = useRef(null);
@@ -223,6 +224,7 @@ export default function Chat() {
               <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
                 Select Room to Display
               </div>
+              {/* <Landing /> */}
             </>
           )}
           {loading && selectedRoom && <LoaderChat />}
