@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,10 +16,11 @@ import { LoaderChatSmall } from "./LoaderChat";
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState(null);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     scrollToBottom();
@@ -28,7 +30,7 @@ export default function Chat() {
     console.log(`Connected to server with id: ${socket.id}`);
   });
 
-  socket.emit("joinRoom", selectedRoom[0]);
+  socket.emit("joinRoom", selectedRoom?.[0]);
 
   socket.on("receiveMessage", (newMessage) => {
     console.log("revieved message");
@@ -95,8 +97,10 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    console.log("Selected Room Id: ", selectedRoom[0]);
-    getMessages();
+    if (selectedRoom) {
+      console.log("Selected Room Id: ", selectedRoom[0]);
+      getMessages();
+    }
   }, [selectedRoom]);
 
   async function getMessages() {
@@ -126,6 +130,12 @@ export default function Chat() {
         setMessages(response.data);
       }
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description:
+          "Can't Get Messages, Check your Network Or Try Again Later (Server Error)",
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -139,7 +149,7 @@ export default function Chat() {
         {/* BREAK */}
         <div className="flex-1 p-3 bg-black">
           <Header onSelectRoom={setSelectedRoom} />
-          {!loading && selectedRoom[0] && (
+          {!loading && selectedRoom && (
             <div>
               <div className="flex flex-col justify-center items-center pb-2 text-3xl font-medium">
                 {selectedRoom[1]}
@@ -195,14 +205,14 @@ export default function Chat() {
               {/* </div> */}
             </div>
           )}
-          {!loading && !selectedRoom[0] && (
+          {!loading && !selectedRoom && (
             <>
               <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
                 Select Room to Display
               </div>
             </>
           )}
-          {loading && selectedRoom[0] && <LoaderChat />}
+          {loading && selectedRoom && <LoaderChat />}
         </div>
       </div>
     </>

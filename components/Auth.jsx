@@ -2,13 +2,15 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
-import Header from "./Header";
 
 export default function Auth() {
+  const { toast } = useToast();
+
   const [activeTab, setActiveTab] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,6 +44,11 @@ export default function Auth() {
         router.push("/"); // Redirect to dashboard
       }
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: `${error.response.data.message}`,
+      });
       throw error;
     } finally {
       setLoading(false);

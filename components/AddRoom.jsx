@@ -22,9 +22,13 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
+
 import Loader from "./Loader";
 
 const AddRoom = ({ getRooms, addAnonymousRoom }) => {
+  const { toast } = useToast();
+
   const [activeTab, setActiveTab] = useState("create");
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
@@ -80,6 +84,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
       }
     } catch (error) {
       setRoomId("");
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Invalid Room ID",
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -136,6 +145,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
       }
     } catch (error) {
       setRoomName("");
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Check your Network Or Try Again Later (Server Error)",
+      });
       throw error;
     } finally {
       setLoading(false);

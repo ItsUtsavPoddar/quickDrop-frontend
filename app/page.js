@@ -2,6 +2,7 @@
 import Footer from "@/components/Footer";
 import Chat from "@/components/Chat";
 import { useEffect, useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 import { useRouter } from "next/navigation";
 
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     <main className="text-white font-custMontFont bg-slate-950 ">
       <Chat />
+      <Toaster />
     </main>
   );
 }
