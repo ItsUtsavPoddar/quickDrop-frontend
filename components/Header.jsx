@@ -13,6 +13,7 @@ const Header = ({ onSelectRoom }) => {
   const addAnonymousRoom = (data) => {
     setRooms([...rooms, data]);
   };
+
   useEffect(() => {
     getRooms();
   }, []);

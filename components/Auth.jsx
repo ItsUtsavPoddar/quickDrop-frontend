@@ -117,91 +117,93 @@ export default function Auth() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#2E151B] text-black px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-background">
-            {activeTab === "login"
-              ? "Sign in Or Be Anonymous"
-              : "Sign up Or Be Anonymous"}
-          </h2>
-        </div>
+    <>
+      <div className="flex min-h-screen items-center justify-center bg-[#2e151b00] text-black px-4 py-12 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-background">
+              {activeTab === "login"
+                ? "Sign in Or Be Anonymous"
+                : "Sign up Or Be Anonymous"}
+            </h2>
+          </div>
 
-        <Tabs
-          defaultValue={activeTab}
-          className="w-full"
-          value={activeTab}
-          onValueChange={setActiveTab}
-        >
-          <TabsList className="mb-6 grid w-full grid-cols-2 rounded-lg bg-muted p-1">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Register</TabsTrigger>
-          </TabsList>
-          <TabsContent value="login" className="space-y-6">
-            <form className="space-y-4">
-              <div>
-                <Input
-                  id="username"
-                  type="username"
-                  autoComplete="off"
-                  required
-                  className="mt-1 block w-full"
-                  placeholder="Username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete="off"
-                  required
-                  className="mt-1 block w-full"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button type="submit" className="w-full" onClick={login}>
-                {loading ? <Loader /> : "Sign in"}
-              </Button>
-            </form>
-          </TabsContent>
-          <TabsContent value="signup" className="space-y-6">
-            <form className="space-y-4">
-              <div>
-                <Input
-                  id="username"
-                  type="username"
-                  autoComplete="off"
-                  required
-                  className="mt-1 block w-full"
-                  placeholder="Username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete="off"
-                  required
-                  className="mt-1 block w-full"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button type="submit" className="w-full" onClick={register}>
-                {loading ? <Loader /> : "Sign up"}
-              </Button>
-            </form>
-          </TabsContent>
-        </Tabs>
-        <div className="flex justify-center">
-          <Button type="submit" className="w-full" onClick={guest}>
-            {loadingGuest ? <Loader /> : "Be Anonymous"}
-          </Button>
+          <Tabs
+            defaultValue={activeTab}
+            className="w-full"
+            value={activeTab}
+            onValueChange={setActiveTab}
+          >
+            <TabsList className="mb-6 grid w-full grid-cols-2 rounded-lg bg-muted p-1">
+              <TabsTrigger value="login">Login</TabsTrigger>
+              <TabsTrigger value="signup">Register</TabsTrigger>
+            </TabsList>
+            <TabsContent value="login" className="space-y-6">
+              <form className="space-y-4">
+                <div>
+                  <Input
+                    id="username"
+                    type="username"
+                    autoComplete="off"
+                    required
+                    className="mt-1 block w-full"
+                    placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Input
+                    id="password"
+                    type="password"
+                    autoComplete="off"
+                    required
+                    className="mt-1 block w-full"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="w-full" onClick={login}>
+                  {loading ? <Loader /> : "Sign in"}
+                </Button>
+              </form>
+            </TabsContent>
+            <TabsContent value="signup" className="space-y-6">
+              <form className="space-y-4">
+                <div>
+                  <Input
+                    id="username"
+                    type="username"
+                    autoComplete="off"
+                    required
+                    className="mt-1 block w-full"
+                    placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Input
+                    id="password"
+                    type="password"
+                    autoComplete="off"
+                    required
+                    className="mt-1 block w-full"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="w-full" onClick={register}>
+                  {loading ? <Loader /> : "Sign up"}
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
+          <div className="flex justify-center">
+            <Button type="submit" className="w-full" onClick={guest}>
+              {loadingGuest ? <Loader /> : "Be Anonymous"}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
