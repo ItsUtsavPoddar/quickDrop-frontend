@@ -148,7 +148,7 @@ export default function Auth() {
       <div className="flex min-h-screen items-start justify-center bg-[#2e151b00] text-black px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <h1 className=" pb-6 text-center text-white  text-5xl font-bold tracking-tight text-background">
-            ChatN'Gone
+            {"ChatN Gone"}
           </h1>
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-background">
