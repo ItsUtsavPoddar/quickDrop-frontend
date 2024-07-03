@@ -162,7 +162,11 @@ export default function Auth() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" onClick={login}>
+                <Button
+                  type="submit"
+                  className="w-full bg-[#444444]"
+                  onClick={login}
+                >
                   {loading ? <Loader /> : "Sign in"}
                 </Button>
               </form>
@@ -191,14 +195,22 @@ export default function Auth() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" onClick={register}>
+                <Button
+                  type="submit"
+                  className="w-full bg-[#444444]"
+                  onClick={register}
+                >
                   {loading ? <Loader /> : "Sign up"}
                 </Button>
               </form>
             </TabsContent>
           </Tabs>
           <div className="flex justify-center">
-            <Button type="submit" className="w-full" onClick={guest}>
+            <Button
+              type="submit"
+              className="w-full bg-[#444444]"
+              onClick={guest}
+            >
               {loadingGuest ? <Loader /> : "Be Anonymous"}
             </Button>
           </div>

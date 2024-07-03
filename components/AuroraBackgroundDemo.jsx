@@ -5,7 +5,7 @@ import React from "react";
 import AuroraBackground from "./ui/aurora-background";
 import Auth from "./Auth";
 
-export function Aurora() {
+export default function AuroraBackgroundDemo() {
   return (
     <AuroraBackground>
       <motion.div
