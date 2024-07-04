@@ -13,6 +13,7 @@ import { socket } from "../utils/socket";
 import LoaderChat from "./LoaderChat";
 import { LoaderChatSmall } from "./LoaderChat";
 import Landing from "./Landing";
+import { BackgroundBeamsComponent } from "./BackgroundBeamsComponent";
 
 export default function Chat() {
   const messagesEndRef = useRef(null);
@@ -221,10 +222,11 @@ export default function Chat() {
           )}
           {!loading && !selectedRoom && (
             <>
-              <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
+              {/* <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
                 Select Room to Display
-              </div>
-              {/* <Landing /> */}
+              </div> */}
+
+              <Landing />
             </>
           )}
           {loading && selectedRoom && <LoaderChat />}

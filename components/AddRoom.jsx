@@ -159,12 +159,17 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger className=" bg-[#18181b] h-9 rounded-md px-3 text-white underline-offset-4 text-sm font-medium  hover:underline">
-          Create or Join Room
+        <DialogTrigger>
+          <Button className=" bg-[#00000000] text-md hover:bg-[#00000000]">
+            Join/ Create Room
+          </Button>
         </DialogTrigger>
-        <DialogContent className="max-h-[80vh]  bg-[#000336] border-0 text-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
+        <DialogContent
+          className="max-h-[80vh]  bg-[#282828] border-0 text-white overflow-y-auto scrollbar-thin 
+        scrollbar-thumb-gray-700"
+        >
           <DialogTitle></DialogTitle>
-          <Card className="max-w-md mx-auto ">
+          <Card className="max-w-md mx-auto border-transparent  bg-[#040518c4] text-white">
             <CardHeader>
               <CardTitle>Create or Join a Chat Room </CardTitle>
               <CardDescription>
@@ -177,9 +182,8 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                   defaultValue="join"
                   value={activeTab}
                   onValueChange={setActiveTab}
-                  className="border-b"
                 >
-                  <TabsList>
+                  <TabsList className="w-full">
                     <TabsTrigger value="join">Join Room</TabsTrigger>
                     <TabsTrigger value="create">Create Room</TabsTrigger>
                   </TabsList>
@@ -196,8 +200,8 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                       </div>
 
                       <Button
-                        type="ghost"
-                        className="w-full"
+                        type="submit"
+                        className="w-full bg-[#7878786e]"
                         onClick={(e) => {
                           e.preventDefault();
                           joinRoom();
@@ -214,15 +218,18 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                         <Input
                           id="name"
                           placeholder="Chat Room Name"
+                          className="text-black"
                           value={roomName}
                           onChange={(e) => setRoomName(e.target.value)}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Room Type</Label>
+                        <Label>
+                          Current Room Type - {roomType.toUpperCase()}
+                        </Label>
                         <RadioGroup
                           value={roomType}
-                          className="flex items-center gap-4"
+                          className="flex items-center gap-4 pt-1"
                           onValueChange={(value) => {
                             setRoomType(value);
                             console.log(value); // Debug log
@@ -233,7 +240,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                               htmlFor="public"
                               className="flex items-center gap-2 cursor-pointer"
                             >
-                              <RadioGroupItem id="public" value="public" />
+                              <RadioGroupItem
+                                id="public"
+                                className="text-black bg-white"
+                                value="public"
+                              />
                               Public
                             </Label>
                           )}
@@ -242,14 +253,18 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                             htmlFor="anonymous"
                             className="flex items-center gap-2 cursor-pointer"
                           >
-                            <RadioGroupItem id="anonymous" value="anonymous" />
+                            <RadioGroupItem
+                              id="anonymous"
+                              className="text-black bg-white"
+                              value="anonymous"
+                            />
                             Anonymous
                           </Label>
                         </RadioGroup>
                       </div>
                       <Button
-                        variant="ghost"
-                        className="w-full"
+                        type="submit"
+                        className="w-full bg-[#7878786e]"
                         onClick={createRoom}
                       >
                         {loading ? <Loader /> : "Create Chat Room"}

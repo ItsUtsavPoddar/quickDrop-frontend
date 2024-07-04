@@ -13,9 +13,12 @@ const Rooms = ({ onSelectRoom, rooms }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className=" bg-[#000000] text-white" variant="">
+        {/* <Button className=" bg-[#000000] text-white" variant="">
           <MenuIcon className="h-8 w-8" />
           <span className="pl-2 text-xl">Rooms</span>
+        </Button> */}
+        <Button className="  bg-[#00000000] text-md hover:bg-[#00000000]">
+          Rooms
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className=" bg-[#171717] text-white border-0 ">

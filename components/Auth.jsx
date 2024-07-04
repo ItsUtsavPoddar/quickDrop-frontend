@@ -176,7 +176,7 @@ export default function Auth() {
                     type="username"
                     autoComplete="off"
                     required
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-full bg-[#00000088] text-white border-0"
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
                   />
@@ -187,7 +187,7 @@ export default function Auth() {
                     type="password"
                     autoComplete="off"
                     required
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-full bg-[#00000088] text-white border-0"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -209,7 +209,7 @@ export default function Auth() {
                     type="username"
                     autoComplete="off"
                     required
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-full bg-[#00000088] text-white border-0"
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
                   />
@@ -220,7 +220,7 @@ export default function Auth() {
                     type="password"
                     autoComplete="off"
                     required
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-full bg-[#00000088] text-white border-0"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -243,7 +243,8 @@ export default function Auth() {
                 type="guestId"
                 autoComplete="off"
                 required
-                className="mt-1 block w-full"
+                className="mt-1 block 
+                border-0 text-white w-full  bg-[#00000088]"
                 placeholder="Anonymous Name"
                 onChange={(e) => setGuestId(e.target.value)}
               />
