@@ -14,6 +14,7 @@ import LoaderChat from "./LoaderChat";
 import { LoaderChatSmall } from "./LoaderChat";
 import Landing from "./Landing";
 import { BackgroundBeamsComponent } from "./BackgroundBeamsComponent";
+import Footer from "./Footer";
 
 export default function Chat() {
   const messagesEndRef = useRef(null);
@@ -65,6 +66,15 @@ export default function Chat() {
 
   async function sendMessage(e) {
     e.preventDefault();
+    if (!content || content.trim() === "") {
+      toast({
+        variant: "destructive",
+        title: "Message cannot be empty",
+        description: "Please type a message to send",
+      });
+      return;
+    }
+
     setLoadingMessage(true);
 
     console.log(content, selectedRoom[0]);
@@ -166,10 +176,12 @@ export default function Chat() {
           <Header onSelectRoom={setSelectedRoom} />
           {!loading && selectedRoom && (
             <div>
-              <div className="flex flex-col justify-center items-center pb-2 text-3xl font-medium">
-                {selectedRoom[1]}
+              <div className="flex  justify-center items-center py-2 text-2xl font-medium  gap-4 overflow-scroll ">
+                <div>{selectedRoom[1]}</div>
+                <div className="text-lg "> ( {selectedRoom[0]} )</div>
               </div>
-              <div className="mt-5 flex h-[calc(100vh-160px)] flex-col justify-end rounded-md border-t">
+
+              <div className="mt-5 flex h-[calc(100vh-190px)] flex-col justify-end rounded-md border-2 border-gray-900 ">
                 <div
                   className="flex-1 overflow-y-auto p-2 "
                   ref={messagesEndRef}
@@ -232,6 +244,7 @@ export default function Chat() {
           {loading && selectedRoom && <LoaderChat />}
         </div>
       </div>
+      {/* <Footer /> */}
     </>
   );
 }

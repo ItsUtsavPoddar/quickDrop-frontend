@@ -17,7 +17,12 @@ export function NavbarDemo() {
 export function Navbar({ className, children }) {
   const [active, setActive] = useState(null);
   return (
-    <div className={cn(" inset-x-0 max-w-2xl mx-auto z-50 pb-2 ", className)}>
+    <div
+      className={cn(
+        "sticky top-0 inset-x-0 max-w-2xl mx-auto z-50 pb-2 ",
+        className
+      )}
+    >
       <Menu setActive={setActive}>{children}</Menu>
     </div>
   );

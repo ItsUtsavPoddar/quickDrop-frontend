@@ -25,9 +25,10 @@ export default function Home() {
   //   return null; // Or you can return a loading spinner or a placeholder
   // }
   return (
-    <main className="text-white font-custMontFont bg-slate-950 ">
+    <main className="text-white font-custMontFont bg-black ">
       <Chat />
       <Toaster />
+      <Footer />
     </main>
   );
 }

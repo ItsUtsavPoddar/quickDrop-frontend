@@ -168,8 +168,11 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
-          <Button className=" bg-[#00000000] text-md hover:bg-[#00000000]">
-            Join/ Create Room
+          <Button
+            className=" bg-[#00000000] text-md hover:bg-[#00000000]"
+            asChild
+          >
+            <div>Join/ Create Room</div>
           </Button>
           {/* asdsa */}
         </DialogTrigger>
