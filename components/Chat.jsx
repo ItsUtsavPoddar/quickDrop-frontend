@@ -225,7 +225,7 @@ export default function Chat() {
               {/* <div className="flex flex-col justify-center items-center pt-32 text-3xl font-medium ">
                 Select Room to Display
               </div> */}
-
+              {/* <BackgroundBeamsComponent /> */}
               <Landing />
             </>
           )}
