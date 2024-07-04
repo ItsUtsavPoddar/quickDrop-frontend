@@ -177,7 +177,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
           {/* asdsa */}
         </DialogTrigger>
         <DialogContent
-          className="max-h-[80vh]  bg-[#282828] border-0 text-white overflow-y-auto scrollbar-thin 
+          className="max-h-[80vh]  bg-[#282828] border-0 text-white overflow-y-auto scrollbar-thin max-w-md
         scrollbar-thumb-gray-700"
         >
           <DialogTitle></DialogTitle>

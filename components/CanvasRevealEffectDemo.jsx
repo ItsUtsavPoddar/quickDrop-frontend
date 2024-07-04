@@ -8,7 +8,7 @@ export function CanvasRevealEffectDemo() {
   return (
     <>
       <div>
-        <div className=" group/canvas-card border-white/[0.2] h-[30rem] relative">
+        <div className=" group/canvas-card border-white/[0.2] h-[70vh] relative">
           <AnimatePresence>
             <div className="h-full w-full absolute inset-0">
               <CanvasRevealEffect
@@ -34,7 +34,7 @@ const Card = ({ title, icon, children }) => {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="border border-black/[0.2] group/canvas-card flex items-center justify-center dark:border-white/[0.2]  max-w-sm w-full mx-auto p-4 relative h-[30rem] relative"
+      className="border border-black/[0.2] group/canvas-card flex items-center justify-center dark:border-white/[0.2]  max-w-sm w-full mx-auto p-4 relative h-[80rem] "
     >
       <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
       <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />

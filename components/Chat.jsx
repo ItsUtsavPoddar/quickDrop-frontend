@@ -186,7 +186,7 @@ export default function Chat() {
               </div>
 
               <div className="mt-5 relative z-10 flex h-[calc(100vh-190px)] flex-col justify-end rounded-md border-2 border-gray-900 ">
-                <div className="absolute inset-0 z-0">
+                <div className="h-full flex-col absolute inset-0 z-0 ">
                   <CanvasRevealEffectDemo />
                 </div>
                 <div
