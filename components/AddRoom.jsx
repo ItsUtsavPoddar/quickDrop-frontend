@@ -98,6 +98,14 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
   async function createRoom(e) {
     e.preventDefault();
     setLoading(true);
+    if (!roomName) {
+      setLoading(false);
+      return toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Room Name is Required",
+      });
+    }
 
     try {
       let response = {};
@@ -163,6 +171,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
           <Button className=" bg-[#00000000] text-md hover:bg-[#00000000]">
             Join/ Create Room
           </Button>
+          {/* asdsa */}
         </DialogTrigger>
         <DialogContent
           className="max-h-[80vh]  bg-[#282828] border-0 text-white overflow-y-auto scrollbar-thin 

@@ -1,3 +1,4 @@
+"use client";
 import BackgroundBeams from "./ui/background-beams";
 const Landing = () => {
   return (

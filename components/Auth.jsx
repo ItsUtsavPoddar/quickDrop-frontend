@@ -62,6 +62,15 @@ export default function Auth() {
   async function register(e) {
     e.preventDefault();
 
+    if (!username || !password) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Username or Password cannot be empty",
+      });
+      setLoading(false);
+      return;
+    }
     setLoading(true);
 
     try {
