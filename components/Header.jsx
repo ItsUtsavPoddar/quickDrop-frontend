@@ -10,6 +10,7 @@ import { Navbar } from "./Navbar";
 const Header = ({ onSelectRoom }) => {
   const router = useRouter();
   const [rooms, setRooms] = useState([]);
+  const [roomsloading, setRoomsLoading] = useState(false);
 
   const addAnonymousRoom = (data) => {
     setRooms([...rooms, data]);
@@ -20,6 +21,7 @@ const Header = ({ onSelectRoom }) => {
   }, []);
 
   async function getRooms() {
+    setRoomsLoading(true);
     if (localStorage.getItem("token")) {
       try {
         const response = await axios.get(
@@ -38,6 +40,8 @@ const Header = ({ onSelectRoom }) => {
         }
       } catch (error) {
         throw error;
+      } finally {
+        setRoomsLoading(false);
       }
     }
   }
@@ -53,7 +57,11 @@ const Header = ({ onSelectRoom }) => {
   return (
     <>
       <Navbar>
-        <Rooms onSelectRoom={onSelectRoom} rooms={rooms} />
+        <Rooms
+          onSelectRoom={onSelectRoom}
+          rooms={rooms}
+          roomsloading={roomsloading}
+        />
 
         <AddRoom getRooms={getRooms} addAnonymousRoom={addAnonymousRoom} />
         <Button

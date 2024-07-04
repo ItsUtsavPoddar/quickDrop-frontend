@@ -28,7 +28,7 @@ export default function Home() {
     <main className="text-white font-custMontFont bg-black ">
       <Chat />
       <Toaster />
-      {/* <Footer /> */}
+      <Footer />
     </main>
   );
 }

@@ -206,6 +206,7 @@ const AddRoom = ({ getRooms, addAnonymousRoom }) => {
                         <Input
                           id="invite-code"
                           placeholder="Enter Room Code"
+                          className="text-black"
                           value={roomId}
                           onChange={(e) => setRoomId(e.target.value)}
                         />
