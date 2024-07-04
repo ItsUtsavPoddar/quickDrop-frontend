@@ -16,6 +16,8 @@ import Landing from "./Landing";
 import { BackgroundBeamsComponent } from "./BackgroundBeamsComponent";
 import Footer from "./Footer";
 
+import { CanvasRevealEffectDemo } from "./CanvasRevealEffectDemo";
+
 export default function Chat() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -172,18 +174,23 @@ export default function Chat() {
       <div className="flex bg-black flex-col h-dvh w-full">
         {/* <div className="flex-1 flex flex-col md:flex-row"> */}
         {/* BREAK */}
-        <div className="flex-1 p-3 bg-black">
+
+        <div className=" flex-1 p-3 ">
           <Header onSelectRoom={setSelectedRoom} />
+
           {!loading && selectedRoom && (
             <div>
-              <div className="flex  justify-center items-center py-2 text-2xl font-medium  gap-4 overflow-scroll ">
+              <div className="flex  justify-center items-center py-2 text-2xl font-medium  gap-4 overflow-scroll  ">
                 <div>{selectedRoom[1]}</div>
                 <div className="text-lg "> ( {selectedRoom[0]} )</div>
               </div>
 
-              <div className="mt-5 flex h-[calc(100vh-190px)] flex-col justify-end rounded-md border-2 border-gray-900 ">
+              <div className="mt-5 relative z-10 flex h-[calc(100vh-190px)] flex-col justify-end rounded-md border-2 border-gray-900 ">
+                <div className="absolute inset-0 z-0">
+                  <CanvasRevealEffectDemo />
+                </div>
                 <div
-                  className="flex-1 overflow-y-auto p-2 "
+                  className=" flex-1 overflow-y-auto p-2 "
                   ref={messagesEndRef}
                 >
                   <div className="flex gap-4 flex-col">
@@ -213,7 +220,7 @@ export default function Chat() {
                   </div>
                 </div>
 
-                <div className="border-0 p-4 ">
+                <div className="border-0 p-4 relative z-20 ">
                   <form className="flex items-center gap-2">
                     <Input
                       id="message"

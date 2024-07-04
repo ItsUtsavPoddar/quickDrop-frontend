@@ -14,25 +14,25 @@ function convertToLocalTime(dateTimeString) {
 }
 const MessageReceived = ({ data }) => {
   return (
-    <div>
-      <div className="flex items-start gap-4">
-        <Avatar className="h-10 w-10 text-black">
-          <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>
-            {data.username
-              ? data.username[0].toUpperCase()
-              : data.guestName
-              ? data.guestName[0].toUpperCase()
-              : ""}
-          </AvatarFallback>
-        </Avatar>
-        <div className="grid gap-1">
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{data.username || data.guestName}</p>
-            <p className="text-xs text-muted-foreground">
-              {convertToLocalTime(data.createdAt)}
-            </p>
-          </div>
+    <div className="flex items-start gap-4 relative z-10">
+      <Avatar className="h-10 w-10 text-black">
+        <AvatarImage src="/placeholder-user.jpg" />
+        <AvatarFallback>
+          {data.username
+            ? data.username[0].toUpperCase()
+            : data.guestName
+            ? data.guestName[0].toUpperCase()
+            : ""}
+        </AvatarFallback>
+      </Avatar>
+      <div className="grid gap-1">
+        <div className="flex items-center gap-2">
+          <p className="font-medium">{data.username || data.guestName}</p>
+          <p className="text-xs text-gray-300">
+            {convertToLocalTime(data.createdAt)}
+          </p>
+        </div>
+        <div className="bg-[#0000004d] text-white rounded-md px-4 py-2">
           <p>{data.content}</p>
         </div>
       </div>
