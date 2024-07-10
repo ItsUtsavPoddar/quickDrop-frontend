@@ -14,6 +14,7 @@ const Header = ({ onSelectRoom }) => {
 
   const addAnonymousRoom = (data) => {
     setRooms([...rooms, data]);
+    setRoomsLoading(false);
   };
 
   useEffect(() => {
@@ -21,8 +22,8 @@ const Header = ({ onSelectRoom }) => {
   }, []);
 
   async function getRooms() {
-    setRoomsLoading(true);
     if (localStorage.getItem("token")) {
+      setRoomsLoading(true);
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/rooms`,
